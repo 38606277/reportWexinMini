@@ -1,0 +1,1 @@
+<view wx:for="{{list}}">{{item.url}}</view>

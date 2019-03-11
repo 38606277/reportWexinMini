@@ -1,0 +1,13 @@
+<view wx:for='{{list}}' wx:for-index="idx" wx:for-item="item" >
+  <view class='item'>
+  <view wx:for='{{outParam}}' wx:for-index="idxout" wx:for-item="outName">
+   <view wx:for='{{item}}' wx:for-index="idxouts" wx:for-item="outNames">
+       <view wx:if="{{idxouts==outName.out_id}}" hover-class='item-press'>
+          <view class='a'>{{outName.out_name}} :{{outNames}}</view>
+        </view>
+    </view>
+   </view>
+   </view>
+</view>
+<view wx:if="{{list.length==0}}" class='tips'>---暂时数据---</view>
+<view wx:if="{{totalSize>0 && list.length==totalSize}}" class='tips'>---没有数据了---</view>
