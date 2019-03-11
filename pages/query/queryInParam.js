@@ -18,7 +18,13 @@ Page({
           "text": "工程类"
         }],
     date: new Date(),
-    dictData: []
+    dictData: [],
+    modalHidden: true,
+    dictionaryList:[],
+    totald:0,
+    pageNumd:1,
+    paramValue:null,
+    paramName:null
   },
 
   /**
@@ -70,6 +76,8 @@ Page({
         for (let  i = 0; i < inColumns.length;i++){
           if ("Select" == inColumns[i].render){
             that.getDiclist(inColumns[i].in_id, inColumns[i].dict_id, "Select");
+          } else if ("InputButton" == inColumns[i].render){
+            that.openModelClick(inColumns[i].in_id, inColumns[i].dict_id);
           }
         }
         that.setData({
@@ -159,4 +167,101 @@ Page({
       url: '/pages/query/queryResult?qryId=' + that.data.qryId + '&classId=' + that.data.classId + '&inParam=' + str + '&outPram=' + strout
     })
   },
+  modalcnt: function () {
+    wx.showModal({
+      title: '提示',
+      content: '这是一个模态弹窗',
+      success: function (res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  },
+  //打开模式窗口
+  openModelClick(name, dict_id) {
+    this.setData({
+      dictionaryList: [], paramValue: dict_id, paramName: name,
+      totald: 0 }, function () {
+        this.loadModelData(dict_id);
+    });
+  },
+  loadModelData(dict_id) {
+    let page = {};
+    page.pageNumd = this.data.pageNumd;
+    page.perPaged = 10;
+    page.searchDictionary = '';
+    var that = this;
+    network.request({
+      url: getApp().globalPath + '/reportServer/dict/getDictValueByID/' + dict_id,
+      data: JSON.stringify(page),
+      header: {
+        'content-type': 'application/json',
+        'credentials': '{ UserCode: "system", Pwd: "KfTaJa3vfLE=" }'
+      },
+      method: 'POST',
+      success: function (res) {
+        that.setData({
+          dictionaryList: res.data.data,
+          totald: res.data.totald
+        });
+      }
+    });
+  },
+  uppage(){
+   let curpag= this.data.pageNumd - 1;
+    if (curpag!=0){
+      this.setData({
+        pageNumd: curpag
+      }, () => {
+        this.loadModelData(this.data.paramValue)
+      });
+    }
+  }, 
+  radioChange(e){
+    var fieldName = this.data.paramName;
+    var value = e.detail.value;
+    const _k2 = `inParam.${fieldName}` // 拼接动态属性
+    this.setData({
+      [_k2]: value
+    });
+    console.log(this.data.inParam)
+  },
+  downpage() {
+    this.setData({
+      pageNumd: this.data.pageNumd +1
+    }, () => {
+      this.loadModelData(this.data.paramValue)
+    });
+  },
+  /**
+   * 显示弹窗
+   */
+  buttonTap: function () {
+    this.setData({
+      modalHidden: false
+    })
+  },
+
+  /**
+   * 点击取消
+   */
+  modalCandel: function () {
+    // do something
+    this.setData({
+      modalHidden: true
+    })
+  },
+
+  /**
+   *  点击确认
+   */
+  modalConfirm: function () {
+    // do something
+    this.setData({
+      modalHidden: true
+    })
+  }  
 })
