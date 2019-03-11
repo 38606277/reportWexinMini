@@ -1,7 +1,7 @@
 <!-- tradeList是要循环的数组，内部的属性通过item.xxx的方式调用 -->
  <block wx:for='{{list.data}}'  wx:key='clists'>
    <!-- data-*属性在触发事件时获取  -->
-   <view class='singleTrade' wx:key='{item.class_id}}' hover-class='item-press' catchtap='showData' data-id='{{item.class_id}}'>
+   <view class='singleTrade' wx:key='{{item.class_id}}' hover-class='item-press' catchtap='showData' data-id='{{item.class_id}}'>
     
      <view class='a'>
        <view class='name'>{{item.class_name}}</view>

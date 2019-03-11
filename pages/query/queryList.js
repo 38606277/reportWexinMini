@@ -28,9 +28,7 @@ Page({
         'credentials': '{ UserCode: "system", Pwd: "KfTaJa3vfLE=" }'
       },
       method: 'POST',
-      dataType: 'json',
       success: function (res) {
-        console.log(res.data);
         that.setData({
           list: res.data
         });

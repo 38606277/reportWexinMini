@@ -1,6 +1,6 @@
 <form bindsubmit="formSubmit" bindreset="formReset">
-  <block wx:for='{{inData}}'  wx:key='clist' >
-    <view wx:if="{{item.render=='Input'}}"  wx:key='{item.in_id}}' >
+  <block wx:for='{{inData}}'  wx:key='clistparam' >
+    <view wx:if="{{item.render=='Input'}}"  wx:key='{{item.in_id}}' >
         {{item.in_name}}
         <input name="{{item.in_id}}" id="{{item.in_id}}" placeholder="{{'请输入'+item.in_name}}" bindchange="bindchangeInput"/>
     </view>
@@ -8,11 +8,11 @@
         {{item.in_name}}
         <input name="{{item.in_id}}" id="{{item.in_id}}" placeholder="{{'请输入'+item.in_name}}" bindchange="bindchangeInput"/>
     </view>
-    <view wx:elif="{{item.render=='Select'}}" wx:key='{item.in_id}}' >
+    <view wx:elif="{{item.render=='Select'}}" wx:key='{{item.in_id}}' >
         {{item.in_name}}
-        <Select id="{{item.in_id}}" prop-array='{{selectArray}}' bind:myget='bindDateChange'></Select>
+        <Select id="{{item.in_id}}" prop-array='{{dictData[item.dict_id]}}' bind:myget='bindSelectChange'></Select>
     </view>
-     <view wx:elif="{{item.render=='Datepicker'}}" wx:key='{item.in_id}}' >
+     <view wx:elif="{{item.render=='Datepicker'}}" wx:key='{{item.in_id}}' >
           <picker
             mode="date"
             value="{{inParam[item.in_id]}}"
@@ -23,7 +23,7 @@
           >
             <view class="picker">
               {{item.in_name}}:
-              <view wx:for="{{inParam}}" wx:for-index="idx" wx:for-item="itemName">
+              <view wx:for="{{inParam}}"  wx:key='{{inparm+idx}}' wx:for-index="idx" wx:for-item="itemName">
                 <view wx:if="{{item.in_id==idx}}">{{itemName}}</view>
               </view>
             </view>

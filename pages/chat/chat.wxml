@@ -1,2 +1,11 @@
 <!--pages/chat/chat.wxml-->
 <text>pages/chat/chat.wxml</text>
+
+
+<view className="footer">
+    <view className="user_face_icon">
+      <image src="../../static/image/jp_btn.png" mode='widthFix'></image>
+    </view>
+    <input id="text" type="text" placeholder="说点什么吧..." bindchange="handleData" ></input>
+    <view id="btn"  bindtap="sendMessage" >发送</view>
+</view>

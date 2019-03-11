@@ -16,10 +16,10 @@ Page({
         }, {
           "id": "21",
           "text": "工程类"
-        }]
-      },
-      date: new Date(),  
-      dictData:null,
+        }],
+    date: new Date(),
+    dictData: []
+  },
 
   /**
    * 生命周期函数--监听页面加载
@@ -30,32 +30,27 @@ Page({
   bindDateChange(e) {
     var fieldName = e.currentTarget.id;
     var value = e.detail.value;
-    //this.data.inParam[fieldName] = value;
-
     const _k2 = `inParam.${fieldName}` // 拼接动态属性
     this.setData({
       [_k2]: value
-    })
-    // var { inParam } = this.data;
-    // var newData = inParam.map(item => ({ ...item }));
-    // newData[fieldName] = value;
-    // this.setData({ inParam: newData });
-
-    console.log(this.data.inParam);
+    });
   },
   bindchangeInput: function (e) {
-    //var that=this;
-   // console.log(e.currentTarget.id, e.detail.value);
     var fieldName = e.currentTarget.id;
     var value = e.detail.value;
     const _k2 = `inParam.${fieldName}` // 拼接动态属性
     this.setData({
       [_k2]: value
     })
-    //this.data.inParam[fieldName] = value;
-    console.log(this.data.inParam);
   },
-  
+  bindSelectChange(e) {
+    var fieldName = e.currentTarget.id;
+    var value = e.detail.id;
+    const _k2 = `inParam.${fieldName}` // 拼接动态属性
+    this.setData({
+      [_k2]: value
+    });
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -69,14 +64,12 @@ Page({
         'credentials': '{ UserCode: "system", Pwd: "KfTaJa3vfLE=" }'
       },
       method: 'POST',
-      dataType: 'json',
       success: function (res) {
-        console.log(res.data);
         let inColumns = res.data.data.in;
         let outColumns = res.data.data.out;
-        for (var i = 0; i < inColumns;i++){
+        for (let  i = 0; i < inColumns.length;i++){
           if ("Select" == inColumns[i].render){
-            this.getDiclist(inColumns[i].in_id, inColumns[i].dict_id, "Select");
+            that.getDiclist(inColumns[i].in_id, inColumns[i].dict_id, "Select");
           }
         }
         that.setData({
@@ -92,22 +85,28 @@ Page({
   getDiclist(in_id, dictId, type) {
     let page = {};
     page.pageNumd = 1;
-    page.perPaged = 15;
+    page.perPaged = 10;
     page.searchDictionary = '';
     var that = this;
     network.request({
       url: getApp().globalPath +'/reportServer/dict/getDictValueByID/' + dictId,
-      data: JSON.stringify(page),
+      data: {},
       header: {
         'content-type': 'application/json',
         'credentials': '{ UserCode: "system", Pwd: "KfTaJa3vfLE=" }'
       },
       method: 'POST',
-      dataType: 'json',
       success: function (res) {
+        let objs = that.data.dictData;
+        if (type == "TagSelect") {
+          objs[dictId] = res.data.data;
+        } else {
+          objs[dictId] = res.data.data;
+        }
         that.setData({
-          dictData: res.data
+          dictData: objs
         });
+
       }
     });
   },
@@ -154,17 +153,10 @@ Page({
   },
   formSubmit: function (e) {
     var that = this;
-    // let paramStr = "";
-    // for (let key of Object.keys(this.data.inParam)) {
-    //   paramStr = paramStr + "," + key + ':' + this.state.inParam[key];
-    // }
-    // paramStr = paramStr.substring(1, paramStr.length);
     let str=JSON.stringify(that.data.inParam);
     let strout = JSON.stringify(that.data.outData);
-    console.log(that.data.inParam);
     wx.navigateTo({
       url: '/pages/query/queryResult?qryId=' + that.data.qryId + '&classId=' + that.data.classId + '&inParam=' + str + '&outPram=' + strout
     })
   },
-
 })
