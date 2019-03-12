@@ -1,29 +1,33 @@
 <form bindsubmit="formSubmit" bindreset="formReset">
- <view class="modal-footer">
-      <button class="btn-cancel" form-type="submit">Submit</button>
-      <button class="btn-confirm" form-type="reset">Reset</button>
-  </view>
- 
   <block wx:for='{{inData}}'  wx:key='clistparam' >
     <view wx:if="{{item.render=='Input'}}"  wx:key='{{item.in_id}}' >
-        {{item.in_name}}
-        <input name="{{item.in_id}}" id="{{item.in_id}}" placeholder="{{'请输入'+item.in_name}}" bindchange="bindchangeInput" style='display:inline-block' value='{{inParam[item.in_id]}}'/>
-    </view>
-    <view wx:elif="{{item.render=='InputButton'}}"  wx:key='{item.in_id}}' >
-      <view class='search'>
-          <view class='searchItem'>
-            {{item.in_name}}
-            <input name="{{item.in_id}}" id="{{item.in_id}}" placeholder="{{'请输入'+item.in_name}}" bindchange="bindchangeInput"/> <button bindtap='buttonTap'>...</button>
-          </view>
+     <view class="section">
+        <!-- <view class="section__title">{{item.in_name}}：</view> -->
+            <input name="{{item.in_id}}" id="{{item.in_id}}" placeholder="{{'请输入'+item.in_name}}" bindchange="bindchangeInput"  value='{{inParam[item.in_id]}}'/>
       </view>
     </view>
+    <view wx:elif="{{item.render=='InputButton'}}"  wx:key='{{item.in_id}}' >
+     <view class="section">
+        <!-- <view class="section__title">{{item.in_name}}：</view> -->
+            <input name="{{item.in_id}}" id="{{item.in_id}}" placeholder="{{'请输入'+item.in_name}}" bindchange="bindchangeInput" /> <button bindtap='buttonTap'>...</button>
+        </view>
+    </view>
     <view wx:elif="{{item.render=='Select'}}" wx:key='{{item.in_id}}' >
-  
-        {{item.in_name}}
-        <Select id="{{item.in_id}}" prop-array='{{dictData[item.dict_id]}}' bind:myget='bindSelectChange' style='display:inline-block'></Select>
+     <view class="section">
+     <!-- <picker mode = "selector"  id="{{item.in_id}}" bindchange="bindSelectChange" value="{{dictData[item.dict_id][index].value_code}}" range="{{dictData[item.dict_id]}}" 
+     data-selecthx="{{dictData[item.dict_id][index].value_code}}" range-key="value_name" >
+    <view class="picker">
+      当前选择：{{dictData[item.dict_id][index].value_name}}
+    </view>
+  </picker> -->
+        <!-- <view class="section__title">{{item.in_name}}：</view> -->
+                <Select id="{{item.in_id}}" prop-array='{{dictData[item.dict_id]}}' bind:myget='bindSelectChange'></Select>
+        </view>
     </view>
     
      <view wx:elif="{{item.render=='Datepicker'}}" wx:key='{{item.in_id}}' >
+       <view class='content'>
+      <view class='left'>{{item.in_name}}：</view>
           <picker
             mode="date"
             value="{{inParam[item.in_id]}}"
@@ -31,22 +35,31 @@
             end="2999-12-31"
             id="{{item.in_id}}"
             bindchange="bindDateChange"
-            style='display:inline-block'
+            custom-item="开始日期"
           >
             <view class="picker">
-              {{item.in_name}}:
-              <view wx:for="{{inParam}}"  wx:key='{{inparm+idx}}' wx:for-index="idx" wx:for-item="itemName">
-                <view wx:if="{{item.in_id==idx}}">{{itemName}}</view>
-              </view>
-            </view>
+                <view class='right'>
+                  <view class='right-left'>
+                      <block wx:for="{{inParam}}"  wx:key='{{inparm+idx}}' wx:for-index="idx" wx:for-item="itemName">
+                        <view wx:if="{{item.in_id==idx}}">{{itemName}}</view>
+                      </block>
+                    </view> 
+                </view>
+              </view>  
           </picker>
         </view>
-      <view wx:else  wx:key='{item.in_id}}' >
-      {{item.in_name}}
-        <input name="{{item.in_id}}" id="{{item.in_id}}" placeholder="please input here" bindchange="bindchangeInput" />
+      </view>
+      <view wx:else  wx:key='{{item.in_id}}' >
+        <view class="section">
+          <!-- <view class="section__title">{{item.in_name}}：</view> -->
+                <input name="{{item.in_id}}" id="{{item.in_id}}" placeholder="{{'请输入'+item.in_name}}" bindchange="bindchangeInput"/>
+        </view>
     </view>
-     
   </block>
+  <view class="btn-area">
+        <button formType="submit" type="primary">Submit</button>
+        <button formType="reset"  type="default">Reset</button>
+  </view>
 </form>
 <modal title="数据字典" class="modal-mask" hidden="{{modalHidden}}" bindconfirm="modalConfirm" bindcancel="modalCandel">
   <view class="modal-content">

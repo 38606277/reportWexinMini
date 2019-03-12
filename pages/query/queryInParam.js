@@ -17,7 +17,7 @@ Page({
           "id": "21",
           "text": "工程类"
         }],
-    date: new Date(),
+    date: new Date().toString(),
     dictData: [],
     modalHidden: true,
     dictionaryList:[],
