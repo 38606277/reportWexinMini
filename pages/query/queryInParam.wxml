@@ -26,7 +26,15 @@
                 <Select id="{{item.in_id}}" placeholder="{{'请选择'+item.in_name}}" prop-array='{{dictData[item.dict_id]}}' bind:myget='bindSelectChange'></Select>
         </view>
     </view>
-    
+    <view wx:elif="{{item.render=='Checkbox'}}">
+       <view class="section">
+        <view class="section__title">{{item.in_name}}：</view>
+          <checkbox-group bindchange="checkboxChange" id='{{item.in_id}}'  data-checks="{{item.checks}}" >
+              <checkbox value="{{inParam[item.in_id]}}" checked="{{item.checks}}" />
+           </checkbox-group>
+
+        </view>
+    </view>
      <view wx:elif="{{item.render=='Datepicker'}}" wx:key='{{item.in_id}}' >
        <view class='content'>
       <view class='left'>{{item.in_name}}：</view>
@@ -56,6 +64,26 @@
           <!-- <view class="section__title">{{item.in_name}}：</view> -->
                 <input name="{{item.in_id}}" id="{{item.in_id}}" placeholder="{{'请输入'+item.in_name}}" bindchange="bindchangeInput"/>
         </view>
+    </view>
+    <view wx:if="{{item.render=='TagSelect'}}"  wx:key='{{item.in_id}}' >
+     <view class="section" style='height:100%;'>
+        <view class="section__title">{{item.in_name}}：</view>
+          <checkbox-group bindchange="checkboxMoreChange" id='{{item.in_id}}'  data-checks="{{item.checks}}" >
+          <view wx:for="{{dictData[item.dict_id]}}" wx:for-item="i">
+              <checkbox value="{{i.value_code}}" checked="{{i.checked}}" >{{i.value_name}}</checkbox>
+              </view>
+           </checkbox-group>
+
+        </view>
+     <!-- <view class="section">
+     
+       <picker mode="multiSelector"  id="{{item.in_id}}" bindchange="bindSelectChange" value="{{dictData[item.dict_id][index].value_code}}" range="{{dictData[item.dict_id]}}" 
+     data-selecthx="{{dictData[item.dict_id][index].value_code}}" range-key="value_name" >
+    <view class="picker">
+      当前选择：{{dictData[item.dict_id][index].value_name}}
+    </view>
+  </picker>
+      </view> -->
     </view>
   </block>
   <view class="btn-area">

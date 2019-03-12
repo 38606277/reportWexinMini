@@ -75,17 +75,28 @@ Page({
       success: function (res) {
         let inColumns = res.data.data.in;
         let outColumns = res.data.data.out;
+        that.setData({
+          inData: res.data.data.in, outData: res.data.data.out
+        });
+        that.data.inData.map((item) => that.data.inParam[item.in_id] = '');
+
         for (let  i = 0; i < inColumns.length;i++){
           if ("Select" == inColumns[i].render){
             that.getDiclist(inColumns[i].in_id, inColumns[i].dict_id, "Select");
           } else if ("InputButton" == inColumns[i].render){
             that.openModelClick(inColumns[i].in_id, inColumns[i].dict_id);
+          } else if ("Checkbox" == inColumns[i].render){
+            let objs = that.data.inParam;
+            objs[inColumns[i].in_id] = '0';
+            that.setData({
+              inParam: objs
+            })
+          } else if ("TagSelect" == inColumns[i].render) {
+            that.getDiclist(inColumns[i].in_id, inColumns[i].dict_id, "TagSelect");
+
           }
         }
-        that.setData({
-          inData: res.data.data.in, outData: res.data.data.out
-        });
-        that.data.inData.map((item) => that.data.inParam[item.in_id] = '');
+        
       },
       fail: function (res) { },
       complete: function (res) { },
@@ -221,6 +232,28 @@ Page({
     var value = e.detail.value;
     this.setData({
       paramModalValue: value
+    });
+  },
+  checkboxChange(e){
+    var fieldName = e.currentTarget.id;
+    var value = e.detail.value;
+    if (value.length>0){
+      value='1';
+    }else{
+      value = '0';
+    }
+    const _k2 = `inParam.${fieldName}` // 拼接动态属性
+    this.setData({
+      [_k2]: value
+    });
+  },
+  checkboxMoreChange(e){
+    var fieldName = e.currentTarget.id;
+    var value = e.detail.value;
+    value = value.join(",");
+    const _k2 = `inParam.${fieldName}` // 拼接动态属性
+    this.setData({
+      [_k2]: value
     });
   },
   /**
