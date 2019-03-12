@@ -236,10 +236,9 @@ Page({
    * 点击取消
    */
   modalCandel: function () {
-    // do something
-    this.setData({
-      modalHidden: true, paramModalValue: null
-    })
+      this.setData({
+        modalHidden: true, paramModalValue: null
+      });
   },
 
   /**
@@ -248,11 +247,13 @@ Page({
   modalConfirm: function () {
     var fieldName = this.data.paramName;
     var value = this.data.paramModalValue;
-    const _key = `inParam.${fieldName}` // 拼接动态属性
-    this.setData({
-      [_key]: value, modalHidden: true, paramModalValue:null
-    });
-    console.log(this.data.inParam)
-
+    if (null != value && "" != value){
+      const _key = `inParam.${fieldName}` // 拼接动态属性
+      this.setData({
+        [_key]: value, modalHidden: true, paramModalValue:null
+      });
+    }else{
+      this.setData({ modalHidden: true, paramModalValue: null});
+    }
   }  
 })
