@@ -1,7 +1,7 @@
 <view class='com-selectBox'>
     <view class='com-sContent' bindtap='selectToggle'>
-        <view class='com-sTxt'>{{nowText}}</view>
-        <!-- <image src='../../public/img/local/down.png'  class='com-sImg'  animation="{{animationData}}"></image> -->
+        <view class='com-sTxt'>{{placeholder==''?'请选择':placeholder}}</view>
+        <image src='../../static/image/downicon.png'  class='com-sImg'  animation="{{animationData}}"></image>
     </view>
     <view class='com-sList' wx:if="{{selectShow}}">
         <view wx:for="{{propArray}}" data-index="{{index}}" data-id='{{item.value_code}}' wx:key='{{item.value_code}}' class='com-sItem' bindtap='setText'>{{item.value_name}}</view>

@@ -9,7 +9,9 @@
     <view wx:elif="{{item.render=='InputButton'}}"  wx:key='{{item.in_id}}' >
      <view class="section">
         <!-- <view class="section__title">{{item.in_name}}：</view> -->
-            <input name="{{item.in_id}}" id="{{item.in_id}}" placeholder="{{'请输入'+item.in_name}}" bindchange="bindchangeInput" /> <button bindtap='buttonTap'>...</button>
+            <input name="{{item.in_id}}" id="{{item.in_id}}" placeholder="{{'请输入'+item.in_name}}" bindchange="bindchangeInput" value='{{inParam[item.in_id]}}' /> <button bindtap='buttonTap' style="padding:0px;border:none" plain='true'>
+            <image src='./../../static/image/more.png' mode='widthFix' style='width:15px;height:15px'></image>
+            </button>
         </view>
     </view>
     <view wx:elif="{{item.render=='Select'}}" wx:key='{{item.in_id}}' >
@@ -21,7 +23,7 @@
     </view>
   </picker> -->
         <!-- <view class="section__title">{{item.in_name}}：</view> -->
-                <Select id="{{item.in_id}}" prop-array='{{dictData[item.dict_id]}}' bind:myget='bindSelectChange'></Select>
+                <Select id="{{item.in_id}}" placeholder="{{'请选择'+item.in_name}}" prop-array='{{dictData[item.dict_id]}}' bind:myget='bindSelectChange'></Select>
         </view>
     </view>
     

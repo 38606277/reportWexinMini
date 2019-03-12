@@ -6,7 +6,10 @@ Component({
   properties: {
     propArray: {
       type: Array,
-    }
+    },
+    placeholder: {
+      type: String,
+    },
   },
 
   /**
@@ -15,7 +18,7 @@ Component({
   data: {
     // 这里是一些组件内部数据
     selectShow: false,//初始option不显示
-    nowText: "请选择",//初始内容
+    //nowText: "请选择",//初始内容
     animationData: {}//右边箭头的动画
   },
 
@@ -56,7 +59,7 @@ Component({
       this.animation.rotate(0).step();
       this.setData({
         selectShow: false,
-        nowText: nowText,
+        placeholder: nowText,
         animationData: this.animation.export()
       });
       var nowDate = {
