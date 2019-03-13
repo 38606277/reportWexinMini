@@ -3,9 +3,21 @@
   border-bottom: 1rpx solid #eee;
   cursor: pointer;
 }
-.tips {
-  font-size: 38rpx;
-  text-align: center;
-  padding: 20rpx;
-  color: #ccc;
+.flex-wrp-row {
+  display: flex;
+  flex-direction: row;
+}
+ 
+.itemnew {
+  position: relative;
+}
+ 
+.item-left {
+   flex: 1; /* 重要 */
+   align-items:center;
+}
+ 
+.item-right {
+  position: relative;
+  align-items:center;
 }

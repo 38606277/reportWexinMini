@@ -1,12 +1,20 @@
 <view wx:for='{{list}}' wx:for-index="idx" wx:for-item="item" >
   <view class='item'>
-  <view wx:for='{{outParam}}' wx:for-index="idxout" wx:for-item="outName">
-   <view wx:for='{{item}}' wx:for-index="idxouts" wx:for-item="outNames">
-       <view wx:if="{{idxouts==outName.out_id}}" hover-class='item-press'>
-          <view class='a'>{{outName.out_name}} :{{outNames}}</view>
+    <view wx:for='{{outParam}}' wx:for-index="idxout" wx:for-item="outName">
+      <view wx:for='{{item}}' wx:for-index="idxouts" wx:for-item="outNames">
+        <view wx:if="{{idxouts==outName.out_id}}">
+          <view class='flex-wrp-row itemnew'>
+            <view class='item-left flex-wrp-row'>
+              <text class='text'>{{outName.out_name}}</text>
+            </view>
+            <view class='item-right flex-wrp-row'>
+              <text class='text'>{{outNames}}</text>
+            </view>
+          </view>
+            <!-- <view >{{outName.out_name}} :{{outNames}}</view> -->
         </view>
+      </view>
     </view>
-   </view>
    </view>
 </view>
 <view wx:if="{{list.length==0}}" class='tips'>---暂时数据---</view>
