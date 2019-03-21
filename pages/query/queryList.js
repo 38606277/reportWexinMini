@@ -1,10 +1,12 @@
 var network = require("../../utils/network.js");
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    burl: getApp().globalPath,
 
   },
 
@@ -21,7 +23,7 @@ Page({
   onReady: function () {
     var that = this;
     network.request({
-      url: getApp().globalPath +'/reportServer/function1/getAllFunctionClass',
+      url: getApp().globalPath +'/reportServer/query/getAllQueryClass',
       data: '',
       header: {
         'content-type': 'application/json',
@@ -29,8 +31,20 @@ Page({
       },
       method: 'POST',
       success: function (res) {
+        var lists = res.data.data;
+        for (var i = 0; i < lists.length; i++) {
+          for (var key in lists[i]) {
+            if (key == "img_file") {
+              var val = lists[i][key];
+              if (null != val) {
+                val = val.replace(/\\/g, "/")
+                lists[i][key] = val;
+              }
+            }
+          }
+        }
         that.setData({
-          list: res.data
+          list: lists
         });
       },
       fail: function (res) { },

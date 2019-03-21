@@ -1,6 +1,19 @@
-<!-- tradeList是要循环的数组，内部的属性通过item.xxx的方式调用 -->
- <block wx:for='{{list.data}}'  wx:key='clists'>
-   <!-- data-*属性在触发事件时获取  -->
+<view class="weui-grids">
+    <view class="weui-grid" wx:for="{{list}}" wx:key="{{item.class_id}}">
+        <navigator url="{{'/pages/query/queryClass?id=' + item.class_id}}">
+            <view class='weui-grid__bg' data-id='{{item.class_id}}'>
+                <view class="weui-grid__icon" wx:if="{{null!=item.img_file}}">
+                    <image src="{{burl+'/report/'+item.img_file}}" mode="scaleToFill" />
+                </view>
+                <view class="weui-grid__icon" wx:else>
+                    <image src="./../../static/image/default.png" mode="scaleToFill" />
+                </view>
+                <text class="weui-grid__label">{{item.class_name}}</text>
+            </view>
+        </navigator>
+    </view>
+</view>
+ <!-- <block wx:for='{{list.data}}'  wx:key='clists'>
    <view class='singleTrade' wx:key='{{item.class_id}}' hover-class='item-press' catchtap='showData' data-id='{{item.class_id}}'>
     
      <view class='a'>
@@ -11,4 +24,4 @@
        
      </view>
    </view>
- </block>
+ </block> -->

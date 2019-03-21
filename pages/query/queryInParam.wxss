@@ -1,3 +1,4 @@
+@import "./../../Componet/template/template.wxss";
 .section{
 	margin:10px 20px; 
 	display:flex;

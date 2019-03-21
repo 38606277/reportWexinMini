@@ -1,4 +1,6 @@
 var network = require("../../utils/network.js");
+var template = require('../../Componet/template/template.js');
+
 Page({
 
   /**
@@ -6,13 +8,15 @@ Page({
    */
   data: {
     classId:'',
-    list:null
+    list:null,
+    burl: getApp().globalPath
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    template.tabbar("tabBar", 1, this);
     this.setData({'classId':options.id});
   },
 
@@ -30,8 +34,20 @@ Page({
       },
       method: 'POST',
       success: function (res) {
+       var lists = res.data.data;
+        for(var i=0;i<lists.length;i++){
+          for (var key in lists[i]) {
+            if (key == "qry_file") {
+             var val= lists[i][key];
+              if (null!=val){
+                val = val.replace(/\\/g, "/")
+                lists[i][key] = val;
+              }
+            }
+          }
+        }
         that.setData({
-          list: res.data
+          list: lists
         });
       },
       fail: function (res) { },

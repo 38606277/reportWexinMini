@@ -1,14 +1,17 @@
-<!-- tradeList是要循环的数组，内部的属性通过item.xxx的方式调用 -->
- <block wx:for='{{list.data}}'  wx:key='clistss'>
-   <!-- data-*属性在触发事件时获取  -->
-   <view class='singleTrade' wx:key='{{item.qry_id}}'  hover-class='item-press' catchtap='showData' data-id='{{item.qry_id}}'>
-    
-     <view class='a'>
-       <view class='name'>{{item.qry_name}}</view>
-     </view>
-     <view class='b'>
-       <view class='price'></view>
-       
-     </view>
-   </view>
- </block>
+<view class="weui-grids">
+      <view class="weui-grid" wx:for="{{list}}" wx:key="{{item.qry_id}}">
+          <navigator url="{{'/pages/query/queryInParam?classId='+item.class_id+'&qryId='+item.qry_id}}">
+              <view class='weui-grid__bg'>
+                  <view class="weui-grid__icon" wx:if="{{null!=item.qry_file}}">
+                      <image src="{{burl+'/report/'+item.qry_file}}" mode="scaleToFill" />
+                  </view>
+                  <view class="weui-grid__icon" wx:else>
+                      <image src="./../../static/image/default.png" mode="scaleToFill" />
+                  </view>
+                  <text class="weui-grid__label">{{item.qry_name}}</text>
+              </view>
+          </navigator>
+      </view>
+  </view>
+<import src="../../Componet/template/template.wxml"/>
+<template is="tabBar" data="{{tabBar:bindData.tabBar}}"/>

@@ -7,8 +7,30 @@ Page({
     motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    list:[],
+    burl: getApp().globalPath,
+    imgUrls: [
+      { url: './../../static/image/a.png', code:"1",name:'1'},
+      { url: './../../static/image/java.png', code: "1", name: '1' },
+      { url: './../../static/image/elm.jpg', code: "1", name: '1' },
+      { url: './../../static/image/a.png', code: "1", name: '1' },
+      { url: './../../static/image/a.png', code: "1", name: '1' },
+      { url: './../../static/image/a.png', code: "1", name: '1' },
+      { url: './../../static/image/a.png', code: "1", name: '1' }
+      ],
+    indicatorDots: true,
+    autoplay: true
   },
+  swipclick(e) {
+    wx.navigateTo({
+      url: e.currentTarget.id
+    })
+    // this.setData({
+    //   indicatorDots: !this.data.indicatorDots
+    // })
+  },
+ 
   //事件处理函数
   bindViewTap: function() {
     wx.navigateTo({
@@ -16,6 +38,35 @@ Page({
     })
   },
   onLoad: function () {
+    var that = this;
+    network.request({
+      url: getApp().globalPath + '/reportServer/query/getAllQueryClass',
+      data: '',
+      header: {
+        'content-type': 'application/json',
+        'credentials': '{ UserCode: "system", Pwd: "KfTaJa3vfLE=" }'
+      },
+      method: 'POST',
+      success: function (res) {
+        var lists = res.data.data;
+        for(var i=0;i<lists.length;i++){
+          for (var key in lists[i]) {
+            if (key == "img_file") {
+             var val= lists[i][key];
+              if (null!=val){
+                val = val.replace(/\\/g, "/")
+                lists[i][key] = val;
+              }
+            }
+          }
+        }
+        that.setData({
+          list: lists
+        });
+      },
+      fail: function (res) { },
+      complete: function (res) { },
+    })
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,

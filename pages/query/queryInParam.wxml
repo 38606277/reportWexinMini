@@ -92,3 +92,5 @@
       <view class="btn-confirm" bindtap="downpage" data-status="confirm">下一页</view>
     </view>
   </modal>
+  <import src="../../Componet/template/template.wxml"/>
+<template is="tabBar" data="{{tabBar:bindData.tabBar}}"/>

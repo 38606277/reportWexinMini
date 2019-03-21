@@ -1,4 +1,6 @@
 var  network = require("../../utils/network.js");
+var template = require('../../Componet/template/template.js');
+
 Page({
 
   /**
@@ -18,6 +20,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    template.tabbar("tabBar", 1, this);
+
     var jsonObj= JSON.parse(options.outPram);
     for (var i = 0; i < jsonObj.length;i++){
       for (var key in jsonObj[i]) {

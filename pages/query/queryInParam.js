@@ -1,4 +1,6 @@
 var network = require("../../utils/network.js");
+var template = require('../../Componet/template/template.js');
+
 Page({
 
   /**
@@ -25,6 +27,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    template.tabbar("tabBar", 1, this);
+
     this.setData({ classId: options.classId, qryId: options.qryId});
   },
   bindKeyInput(e) {
