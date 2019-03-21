@@ -94,6 +94,7 @@ Page({
               if (undefined != response.data.data && null != response.data.data) {
                 let datas = response.data.data;
                 wx.setStorageSync('userInfo', datas);
+                that.setData({ isLogin:true})
               } else {
                 alert("登录失败，请检查用户名与密码");
               }
