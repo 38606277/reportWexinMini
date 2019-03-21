@@ -9,7 +9,8 @@
     "pages/user/user",
     "pages/query/queryClass",
     "pages/query/queryInParam",
-    "pages/query/queryResult"
+    "pages/query/queryResult",
+    "pages/AI/AI"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -18,7 +19,6 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -33,7 +33,7 @@
         "text": "数据查询"
       },
       {
-        "pagePath": "pages/user/user",
+        "pagePath": "pages/AI/AI",
         "iconPath": "/static/image/icon/ais.png",
         "selectedIconPath": "/static/image/icon/ais_on.png",
         "text": "AI"
