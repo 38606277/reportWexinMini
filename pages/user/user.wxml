@@ -1,2 +1,46 @@
-<!--pages/user/user.wxml-->
-<text>pages/user/user.wxml</text>
+
+<form bindsubmit="formSubmit" bindreset="formReset">
+<view class="gerenzhonhx">
+    <view class="grzx_toub_beij"><image src="../../static/image/sandnab.jpg"/></view>
+    <view class="grzx_toux_fus">
+      <view class="of">
+        <image src="../../static/image/nh.jpg"/>
+      </view>
+    </view>
+</view>
+<view wx:if="{{isLogin}}">
+    <view class='flex-wrp-row itemnew'>
+      <view class='item-left flex-wrp-row'>
+        <text class='text'>用户名</text>
+      </view>
+      <view class='item-right flex-wrp-row'>
+        <text class='text'>{{UserCode}}</text>
+      </view>
+    </view>
+    <view class='flex-wrp-row itemnew'>
+      <view class='item-left flex-wrp-row'>
+        <text class='text'>密码</text>
+      </view>
+      <view class='item-right flex-wrp-row'>
+        <text class='text'>{{Pwd}}</text>
+      </view>
+    </view>
+    
+      <view class="btn-area">
+          <button formType="button" type="primary" bindtap='logout'>退出登录</button>
+    </view>
+</view>   
+<view wx:else>
+     <view class="section">
+            <input name="UserCode" type='text' id="UserCode" placeholder="请输入用户名" bindchange="bindKeyInput" />
+      </view>
+      <view class="section">
+            <input name="Pwd" type='password' id="Pwd" placeholder="请输入密码" bindchange="bindKeyInput"  />
+      </view>
+     
+    <view class="btn-area">
+          <button formType="submit" type="primary">Submit</button>
+          <button formType="reset"  type="default">Reset</button>
+    </view>
+  </view> 
+</form>      
