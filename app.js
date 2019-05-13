@@ -1,6 +1,6 @@
 //app.js
 App({
-  globalPath: "http://192.168.0.106:8080",
+  globalPath: "https://192.168.1.193:8080",
   onLaunch: function () {
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
