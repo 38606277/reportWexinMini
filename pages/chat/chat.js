@@ -2,6 +2,45 @@ const app = getApp();
 // var websocket = require("../../utils/websocket.js");
 var network = require("../../utils/network.js");
 var utils   = require("../../utils/util.js");
+var GetList = function (that) {
+  var mInfo = {
+    'from_userId': that.data.userId, 'to_userId': that.data.to_userId,
+    'pageNumd': that.data.page, 'perPaged': 6
+  }
+  network.request({
+    url: getApp().globalPath + '/reportServer/chat/getChatByuserID',
+    data: JSON.stringify(mInfo),
+    header: {
+      'content-type': 'application/json',
+      'credentials': '{ UserCode: "system", Pwd: "KfTaJa3vfLE=" }'
+    },
+    method: 'POST',
+    success: function (res) {
+      var list = res.data.data;
+      var newdata = [];
+      if (list.length > 0) {
+        for (var i = 0; i < list.length; i++) {
+          for (var key in list[i]) {
+            if (key == "message_time") {
+              var val = list[i][key];
+              if (null != val) {
+                val = utils.date_time(val);
+                list[i][key] = val;
+              }
+            }
+          }
+          newdata.unshift(list[i]);
+        }
+        newdata = newdata.concat(that.data.newslist);
+        ++that.data.page;
+      } else {
+        newdata = newdata.concat(that.data.newslist);
+      }
+      that.setData({ newslist: newdata });
+      that.bottom()
+    }
+  });
+}
 Page({
   /**
   * 页面的初始数据
@@ -10,6 +49,7 @@ Page({
     newslist: [],
     userInfo: {},
     scrollTop: 0,
+    scrollHeight: 0,
     increase: false,//图片添加区域隐藏
     aniStyle: true,//动画效果
     message: "",
@@ -19,7 +59,13 @@ Page({
     avatarUrl:'',
     page:1,
     chatName:'机器人',
-    burl: getApp().globalPath
+    burl: getApp().globalPath,
+    modalHidden: true,
+    dictionaryList: [],
+  },
+  //下拉刷新
+  onPullDownRefresh: function () {
+    this.onLoad()
   },
   /**
   * 生命周期函数--监听页面加载
@@ -35,11 +81,19 @@ Page({
         avatarUrl: userInfo.icon == undefined ? '' : userInfo.icon.replace(/\\/g, "/")
       })
     }
+    var that = this
+    wx.getSystemInfo({
+      success: function (res) {
+        that.setData({
+          scrollHeight: res.windowHeight
+        });
+      }
+    });
     var mInfo = {
       'from_userId': this.data.userId, 'to_userId': this.data.to_userId,
-      'pageNumd': this.data.page, 'perPaged': 5
+      'pageNumd': this.data.page, 'perPaged': 6
     }
-    var that = this
+   
     network.request({
       url: getApp().globalPath + '/reportServer/chat/getChatByuserID',
       data: JSON.stringify(mInfo),
@@ -61,7 +115,17 @@ Page({
                   list[i][key] = val;
                 }
               }
+              if (key == "post_message") {
+                var val = list[i][key];
+                if (null != val) {
+                  if (utils.isJSON(val)){
+                    val = JSON.parse(val);
+                    list[i][key] = val;
+                  }
+                }
+              }
             }
+            
             newdata.unshift(list[i]);
           }
           newdata = newdata.concat(that.data.newslist);
@@ -73,60 +137,48 @@ Page({
         that.bottom()
       }}
     );
-    // var that = this
-
-    // if (app.globalData.userInfo) {
-
-    //   this.setData({
-
-    //     userInfo: app.globalData.userInfo
-
-    //   })
-
-    // }
-
-    //调通接口
-
-    // websocket.connect(this.data.userInfo, function (res) {
-
-    //   // console.log(JSON.parse(res.data))
-
-    //   var list = []
-
-    //   // list = that.data.newslist
-
-    //   // list.push(JSON.parse(res.data))
-
-    //   that.setData({
-
-    //     newslist: list
-
-    //   })
-
-    // })
-
+  },
+  /**
+   * 显示弹窗
+   */
+  buttonTap: function (e) {
+    console.log(e.currentTarget.dataset['index']);
+    this.setData({
+      modalHidden: false,
+      dictionaryList: e.currentTarget.dataset['index']
+    })
+  },
+   /**
+   * 点击取消
+   */
+  modalCandel: function () {
+    this.setData({
+      modalHidden: true, dictionaryList: []
+    });
+  },
+  //   该方法绑定了页面滑动到底部的事件
+  bindDownLoad: function () {
+    var that = this;
+    GetList(that);
+  },
+  //   该方法绑定了页面滚动时的事件
+  scroll: function (event) {
+    this.setData({
+      scrollTop: event.detail.scrollTop
+    });
   },
 
   // 页面卸载
 
   onUnload() {
-
     // wx.closeSocket();
-
     // wx.showToast({
-
     //   title: '连接已断开~',
-
     //   icon: "none",
-
     //   duration: 2000
-
     // })
-
   },
-
   //事件处理函数
-
   send: function () {
     var flag = this;
     var flagtw = this;

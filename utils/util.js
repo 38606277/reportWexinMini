@@ -40,7 +40,22 @@ function date_time(number) {
   var theTime = date.getFullYear() + "-" + month + "-" + currentDate + " " + hour + ":" + minute + ":" + second;
   return theTime;
 }
+function isJSON(str) {
+  if (typeof str == 'string') {
+    try {
+      var obj = JSON.parse(str);
+      if (typeof obj == 'object' && obj) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+}
 module.exports = {
   formatTime: formatTime,
-  date_time: date_time
+  date_time: date_time,
+  isJSON: isJSON
 }
