@@ -4,7 +4,7 @@
     <view class="grzx_toub_beij"><image src="../../static/image/sandnab.jpg"/></view>
     <view class="grzx_toux_fus">
       <view class="of">
-        <image src="../../static/image/nh.jpg"/>
+        <image src="{{avatarUrl!=''?burl+'/report/'+avatarUrl:'../../static/image/nh.jpg'}}"/>
       </view>
     </view>
 </view>
