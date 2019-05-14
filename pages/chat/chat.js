@@ -1,19 +1,11 @@
-// pages/chat/chat.js
-
 const app = getApp();
-
 // var websocket = require("../../utils/websocket.js");
 var network = require("../../utils/network.js");
 var utils   = require("../../utils/util.js");
-
 Page({
-
-
-
   /**
   * 页面的初始数据
   */
-
   data: {
     newslist: [],
     userInfo: {},
@@ -29,14 +21,11 @@ Page({
     chatName:'机器人',
     burl: getApp().globalPath
   },
-
   /**
   * 生命周期函数--监听页面加载
   */
-
   onLoad: function () {
     var userInfo = wx.getStorageSync('userInfo');
-    console.log(userInfo.icon.replace(/\\/g, "/"))
     if (undefined != userInfo && null != userInfo && '' != userInfo) {
       this.setData({
         userId: userInfo.id,
@@ -64,6 +53,15 @@ Page({
         var newdata = [];
         if (list.length > 0) {
           for (var i = 0; i < list.length; i++) {
+            for (var key in list[i]) {
+              if (key == "message_time") {
+                var val = list[i][key];
+                if (null != val) {
+                  val = utils.date_time(val);
+                  list[i][key] = val;
+                }
+              }
+            }
             newdata.unshift(list[i]);
           }
           newdata = newdata.concat(that.data.newslist);
@@ -72,6 +70,7 @@ Page({
           newdata = newdata.concat(that.data.newslist);
         }
         that.setData({ newslist: newdata });
+        that.bottom()
       }}
     );
     // var that = this
@@ -130,6 +129,7 @@ Page({
 
   send: function () {
     var flag = this;
+    var flagtw = this;
     if (this.data.message.trim() == "") {
       wx.showToast({
         title: '消息不能为空哦~',
@@ -142,7 +142,7 @@ Page({
           increase: false
         })
       }, 500)
-      var ist = true;
+     
       //先保存发送信息
       var message = this.data.message;
       this.data.message = '';
@@ -171,7 +171,7 @@ Page({
               'to_userId': flag.data.to_userId,
               'message_state':'0',
               'message_type':'0',
-              'message_time': timestamp
+              'message_time': utils.formatTime(new Date())
              }];
             var a4 = flag.data.newslist;
             var a3 = a4.concat(a2);
@@ -179,6 +179,7 @@ Page({
             flag.setData({
               newslist: a3
             });
+            flag.bottom()
               network.request({
                 url: getApp().globalPath + '/reportServer/nlp/getResult/' + message,
                 data: null,
@@ -198,11 +199,12 @@ Page({
                       'message_type': resBack.data.message_type,
                       'to_userId': flag.data.userId,
                       'message_state': '0',
-                      'message_time': timestampes}];
+                      'message_time': utils.formatTime(new Date())}];
                     var ba3 = flag.data.newslist.concat(ba2);
                     flag.setData({
                       newslist: ba3
                     });
+                    flagtw.bottom()
                   }else{
                     var timestampes = Date.parse(new Date());
                     timestampes = timestampes / 1000;
@@ -212,13 +214,15 @@ Page({
                       'message_type': '0',
                       'to_userId': flag.data.userId,
                       'message_state': '0',
-                      'message_time': timestampes
+                      'message_time': utils.formatTime(new Date())
                     }];
                     var ba3 = flag.data.newslist.concat(ba2);
                     flag.setData({
                       newslist: ba3
                     });
+                    flagtw.bottom()
                   }
+                 
                 }
               })
           }
@@ -226,7 +230,7 @@ Page({
       
       // websocket.send('{ "content": "' + this.data.message + '", "date": "' + utils.formatTime(new Date()) + '","type":"text", "nickName": "' + this.data.userInfo.nickName + '", "avatarUrl": "' + this.data.userInfo.avatarUrl + '" }')
 
-      this.bottom()
+     // this.bottom()
 
     }
 

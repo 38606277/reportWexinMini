@@ -7,7 +7,9 @@ Page({
   data: {
     UserCode: '',
     Pwd: '',
-    isLogin:false
+    isLogin:false,
+    avatarUrl:'',
+    burl: getApp().globalPath
   },
 
   /**
@@ -19,7 +21,8 @@ Page({
       this.setData({
         UserCode: userInfo.userCode,
         Pwd: userInfo.pwd,
-        isLogin:true
+        isLogin:true,
+        avatarUrl: userInfo.icon == undefined ? '' : userInfo.icon.replace(/\\/g, "/")
       })
     }
   },
@@ -94,7 +97,11 @@ Page({
               if (undefined != response.data.data && null != response.data.data) {
                 let datas = response.data.data;
                 wx.setStorageSync('userInfo', datas);
-                that.setData({ isLogin:true})
+                that.setData({ 
+                  isLogin: true, 
+                  userId: datas.id, 
+                  avatarUrl: datas.icon == undefined ? '' : datas.icon.replace(/\\/g, "/")
+                })
               } else {
                 alert("登录失败，请检查用户名与密码");
               }

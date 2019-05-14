@@ -25,6 +25,14 @@
         <text class='text'>{{Pwd}}</text>
       </view>
     </view>
+     <view class='flex-wrp-row itemnew'>
+      <view class='item-left flex-wrp-row'>
+        <text class='text'>头像</text>
+      </view>
+      <view class='item-right flex-wrp-row'>
+          <image class='new_img' src="{{burl+'/report/'+avatarUrl}}"></image>
+      </view>
+    </view>
     
       <view class="btn-area">
           <button formType="button" type="primary" bindtap='logout'>退出登录</button>
