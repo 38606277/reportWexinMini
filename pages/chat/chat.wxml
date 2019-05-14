@@ -56,8 +56,11 @@
     <!-- <view class="add" bindtap='increase'>+</view> -->
     <button type="primary" bindtap='send' formType="reset" size="small" button-hover="blue">发送      </button>
   </form>
+  <!-- <view class='increased {{aniStyle?"slideup":"slidedown"}}' wx:if="{{increase}}">
+       <view class="image" bindtap='chooseImage'>相册 </view>  
+    </view> -->
 </view>
-<modal class="modal-mask" hidden="{{modalHidden}}" bindconfirm="modalConfirm" bindcancel="modalCandel">
+<modal class="modal-mask" hidden="{{modalHidden}}"  showCancel="{{false}}" confirmText="关闭" bindconfirm="modalConfirm" bindcancel="modalConfirm">
   <view class="modal-content">
   <view wx:for='{{dictionaryList.data.list}}' wx:for-index="idx" wx:for-item="litem">
     <view wx:for='{{dictionaryList.data.out}}' wx:for-index="idxout" wx:for-item="outName">

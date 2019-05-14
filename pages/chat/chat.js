@@ -142,7 +142,6 @@ Page({
    * 显示弹窗
    */
   buttonTap: function (e) {
-    console.log(e.currentTarget.dataset['index']);
     this.setData({
       modalHidden: false,
       dictionaryList: e.currentTarget.dataset['index']
@@ -151,7 +150,7 @@ Page({
    /**
    * 点击取消
    */
-  modalCandel: function () {
+  modalConfirm: function () {
     this.setData({
       modalHidden: true, dictionaryList: []
     });
@@ -227,7 +226,6 @@ Page({
              }];
             var a4 = flag.data.newslist;
             var a3 = a4.concat(a2);
-            console.log(a3)
             flag.setData({
               newslist: a3
             });
@@ -241,7 +239,6 @@ Page({
                 },
                 method: 'POST',
                 success: function (resBack) {
-                  console.log(resBack)
                   if (resBack.data.resultCode== "1000") {
                     var timestampes = Date.parse(new Date());
                     timestampes = timestampes / 1000;
@@ -337,91 +334,58 @@ Page({
     })
 
   },
-
   //发送图片
-
   chooseImage() {
-
     var that = this
-
     wx.chooseImage({
-
       count: 1, // 默认9
-
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-
       success: function (res) {
-
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-
         var tempFilePaths = res.tempFilePaths
-
-        // console.log(tempFilePaths)
-
         wx.uploadFile({
-
-          url: 'http://.....', //服务器地址
-
+          url: getApp().globalPath + '/reportServer/uploadFile/uploadFile', //服务器地址
           filePath: tempFilePaths[0],
-
           name: 'file',
-
           headers: {
-
             'Content-Type': 'form-data'
-
           },
-
           success: function (res) {
-
             if (res.data) {
-
+             
+              var ba2 = [{
+                'from_userId': that.data.userId,
+                'post_message': '暂无消息',
+                'message_type': 'image',
+                'to_userId': that.data.to_userId,
+                'message_state': '0',
+                'message_time': utils.formatTime(new Date())
+              }];
+              var ba3 = that.data.newslist.concat(ba2);
               that.setData({
-
+                newslist: ba3,
                 increase: false
-
-              })
-
+              });
               // websocket.send('{"images":"' + res.data + '","date":"' + utils.formatTime(new Date()) + '","type":"image","nickName":"' + that.data.userInfo.nickName + '","avatarUrl":"' + that.data.userInfo.avatarUrl + '"}')
-
               that.bottom()
-
             }
-
           }
-
         })
-
       }
-
     })
-
   },
-
   //图片预览
-
   previewImg(e) {
-
     var that = this
-
     //必须给对应的wxml的image标签设置data-set=“图片路径”，否则接收不到
-
     var res = e.target.dataset.src
-
     var list = this.data.previewImgList //页面的图片集合数组
-
     //判断res在数组中是否存在，不存在则push到数组中, -1表示res不存在
-
     if (list.indexOf(res) == -1) {
-
       this.data.previewImgList.push(res)
-
     }
-
     wx.previewImage({
-
       current: res, // 当前显示图片的http链接
 
       urls: that.data.previewImgList // 需要预览的图片http链接列表
