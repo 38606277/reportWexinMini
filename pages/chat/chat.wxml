@@ -1,11 +1,12 @@
-<view class="news" bindtap='outbtn'>
+<view class="news">
   <view class="chat-notice" wx:if="{{UserCode}}">系统消息: 欢迎 {{ UserCode }}</view>
   <view class="historycon">
-    <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height:{{scrollHeight}}px;" bindscrolltoupper="bindDownLoad" bindscroll="scroll" class="history" >
-      <block wx:for="{{newslist}}" wx:key>
-        <view>{{item.message_time}}</view>
+   <scroll-view scroll-top="{{scrollTop}}" upper-threshold="1" scroll-y="true" style="height:{{scrollHeight}}px;" class="history" bindscrolltoupper="bindUpperLoad" bindscroll="scroll"  scroll-into-view="{{toView}}"> 
+      <view class="body-view" hidden="{{hidden}}">加载中... </view> 
+      <block wx:for="{{newslist}}" wx:key="messagelist">
         <!--自己的消息 -->
-        <view class="chat-news" wx:if="{{item.from_userId == userId}}">
+        <view class="chat-news" wx:if="{{item.from_userId == userId}}"  id="row_{{index}}">
+         <view>{{item.message_time}}</view>
           <view style="text-align: right;padding-right: 20rpx;">
             <text class="name">{{ item.UserCode }}</text>
             <image class='new_img' src="{{burl+'/report/'+avatarUrl}}"></image>
@@ -20,7 +21,8 @@
           </view>
         </view>
         <!-- 别人的消息 -->
-        <view class="chat-news" wx:else>
+        <view class="chat-news" wx:else  id="row_{{index}}">
+         <view>{{item.message_time}}</view>
           <view style="text-align: left;padding-left: 20rpx;">
             <image class='new_img' src="{{'./../../static/image/icon/ai.png'}}"></image>
             <text class="name">{{ chatName }}</text>
@@ -30,10 +32,10 @@
               <view class='new_txt'>{{item.post_message}}</view>
             </block>
             <block wx:if="{{item.message_type=='json'}}">
-             <view wx:for='{{item.post_message.data.out}}' wx:for-index="idxout" wx:for-item="outName">
+             <view wx:for='{{item.post_message.data.out}}' wx:key="zidfone"  wx:for-index="idxout" wx:for-item="outName">
                         <view class='flex-wrp-row itemnew'>
                           <view class='item-left flex-wrp-row'>
-    <text class='text'>{{outName.out_name}}:{{item.post_message.data.list[0][outName.out_id]}}</text>
+                            <text class='text'>{{outName.out_name}}:{{item.post_message.data.list[0][outName.out_id]}}</text>
                           </view>
                         </view>
                   </view>
@@ -53,21 +55,17 @@
 <view class="message">
   <form bindreset="cleanInput" class="sendMessage">
     <input type="text" placeholder="请输入聊天内容.." value="{{massage}}" bindinput='bindChange'></input>
-    <!-- <view class="add" bindtap='increase'>+</view> -->
     <button type="primary" bindtap='send' formType="reset" size="small" button-hover="blue">发送      </button>
   </form>
-  <!-- <view class='increased {{aniStyle?"slideup":"slidedown"}}' wx:if="{{increase}}">
-       <view class="image" bindtap='chooseImage'>相册 </view>  
-    </view> -->
 </view>
 <modal class="modal-mask" hidden="{{modalHidden}}"  showCancel="{{false}}" confirmText="关闭" bindconfirm="modalConfirm" bindcancel="modalConfirm">
   <view class="modal-content">
-  <view wx:for='{{dictionaryList.data.list}}' wx:for-index="idx" wx:for-item="litem">
-    <view wx:for='{{dictionaryList.data.out}}' wx:for-index="idxout" wx:for-item="outName">
+  <view wx:for='{{dictionaryList.data.list}}' wx:key="zidfu" wx:for-index="idx" wx:for-item="litem">
+    <view wx:for='{{dictionaryList.data.out}}' wx:key="zidz" wx:for-index="idxoutm" wx:for-item="outNamem">
       <view class='flex-wrp-row itemnew'>
         <view class='item-left flex-wrp-row'>
           <text class='text'>
-          {{outName.out_name}}:{{litem[outName.out_id]}}
+          {{outNamem.out_name}}:{{litem[outNamem.out_id]}}
           </text>
         </view>
       </view>

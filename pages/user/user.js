@@ -16,15 +16,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var userInfo = wx.getStorageSync('userInfo');
-    if (undefined != userInfo && null != userInfo && '' != userInfo){
-      this.setData({
-        UserCode: userInfo.userCode,
-        Pwd: userInfo.pwd,
-        isLogin:true,
-        avatarUrl: userInfo.icon == undefined ? '' : userInfo.icon.replace(/\\/g, "/")
-      })
-    }
+    
   },
   logout:function(e){
     this.setData({ isLogin: false, UserCode: '',Pwd:'' });
@@ -34,7 +26,15 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-   
+    var userInfo = wx.getStorageSync('userInfo');
+    if (undefined != userInfo && null != userInfo && '' != userInfo) {
+      this.setData({
+        UserCode: userInfo.userCode,
+        Pwd: userInfo.pwd,
+        isLogin: true,
+        avatarUrl: userInfo.icon == undefined ? '' : userInfo.icon
+      })
+    }
   },
   bindKeyInput(e) {
     var fieldName = e.currentTarget.id;
@@ -96,11 +96,12 @@ Page({
             success: function (response) {
               if (undefined != response.data.data && null != response.data.data) {
                 let datas = response.data.data;
+                datas.icon=datas.icon == undefined ? '' : datas.icon.replace(/\\/g, "/")
                 wx.setStorageSync('userInfo', datas);
                 that.setData({ 
                   isLogin: true, 
                   userId: datas.id, 
-                  avatarUrl: datas.icon == undefined ? '' : datas.icon.replace(/\\/g, "/")
+                  avatarUrl: datas.icon
                 })
               } else {
                 alert("登录失败，请检查用户名与密码");
