@@ -101,7 +101,7 @@ page {
  
 .history {
   height: 100%;
-  margin-top: 15px;
+  /* margin-top: 15px; */
   padding: 10rpx;
   font-size: 14px;
   line-height: 20px;
@@ -289,4 +289,19 @@ transform: translateY(0);
 .item-right {
   position: relative;
   align-items:center;
+}
+.body-loading{
+  text-align:center;
+  width: 100%;
+  font-size: 15px;
+}
+/*悬浮提示框*/
+.hud-container {
+    position: fixed;
+    width: 150px;
+    height: 150px;
+    left: 50%;
+    top: 50%;
+    margin-left: -75px;
+    margin-top: -75px;
 }

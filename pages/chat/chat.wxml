@@ -1,8 +1,8 @@
-<view class="news">
+<view class="news"> 
   <view class="chat-notice" wx:if="{{UserCode}}">系统消息: 欢迎 {{ UserCode }}</view>
-  <view class="historycon">
-   <scroll-view scroll-top="{{scrollTop}}" upper-threshold="1" scroll-y="true" style="height:{{scrollHeight}}px;" class="history" bindscrolltoupper="bindUpperLoad" bindscroll="scroll"  scroll-into-view="{{toView}}"> 
-      <view class="body-view" hidden="{{hidden}}">加载中... </view> 
+  <view class="historycon"> 
+   <scroll-view scroll-top="{{scrollTop}}" upper-threshold="1" scroll-y="true" style="height:{{scrollHeight}}px;" class="history" scroll-into-view="{{toView}}" bindtouchstart="mytouchstart" bindtouchend="mytouchmove" id="scroll-wrap"><!-- bindscrolltoupper="bindUpperLoad" -->
+      <view class="body-loading" hidden="{{hidden}}">加载中... </view> 
       <block wx:for="{{newslist}}" wx:key="messagelist">
         <!--自己的消息 -->
         <view class="chat-news" wx:if="{{item.from_userId == userId}}"  id="row_{{index}}">
@@ -51,10 +51,13 @@
   </view>
 </view>
 <view id="flag"></view>
+<view class="hud-container" wx:if="{{status != normal}}" style="top: {{hud_top}}px; left: {{hud_left}}px;"></view>
+
 <!-- 聊天输入 -->
 <view class="message">
   <form bindreset="cleanInput" class="sendMessage">
     <input type="text" placeholder="请输入聊天内容.." value="{{massage}}" bindinput='bindChange'></input>
+  <view bindlongtap="longTap" bindtouchstart="touchStart" bindtouchend="touchEnd">单机录音</view>
     <button type="primary" bindtap='send' formType="reset" size="small" button-hover="blue">发送      </button>
   </form>
 </view>

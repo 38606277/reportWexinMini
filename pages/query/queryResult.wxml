@@ -1,7 +1,7 @@
-<view wx:for='{{list}}' wx:for-index="idx" wx:for-item="item" >
+<view wx:for='{{list}}' wx:key="" wx:for-index="idx" wx:for-item="item" >
   <view class='item'>
-    <view wx:for='{{outParam}}' wx:for-index="idxout" wx:for-item="outName">
-      <view wx:for='{{item}}' wx:for-index="idxouts" wx:for-item="outNames">
+    <view wx:for='{{outParam}}' wx:key="" wx:for-index="idxout" wx:for-item="outName">
+      <view wx:for='{{item}}' wx:key="" wx:for-index="idxouts" wx:for-item="outNames">
         <view wx:if="{{idxouts==outName.out_id}}">
           <view class='flex-wrp-row itemnew'>
             <view class='item-left flex-wrp-row'>

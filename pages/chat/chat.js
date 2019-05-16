@@ -1,9 +1,11 @@
 var network = require("../../utils/network.js");
-var utils   = require("../../utils/util.js");
+var utils  = require("../../utils/util.js");
+var canUseReachBottom = true;//触底函数控制变量
 var GetList = function (that) {
+  //canUseReachBottom = false;
   that.setData({
     hidden: false
-  }); 
+  });
   var mInfo = {
     'from_userId': that.data.userId, 'to_userId': that.data.to_userId,
     'pageNumd': that.data.page, 'perPaged': that.data.pageSize
@@ -43,10 +45,11 @@ var GetList = function (that) {
         }
         newdata = newdata.concat(that.data.newslist);
         ++that.data.page;
+       // canUseReachBottom = true;
       } else {
         newdata = newdata.concat(that.data.newslist);
       }
-      that.setData({ newslist: newdata, hidden: true});
+      that.setData({ newslist: newdata, hidden: true });
     }
   });
 }
@@ -58,6 +61,7 @@ Page({
     newslist: [],
     userInfo: {},
     scrollTop: 0, 
+    start_scroll:0,
     hidden: true, 
     scrollHeight: 0,
     message: "",
@@ -71,7 +75,15 @@ Page({
     burl: getApp().globalPath,
     modalHidden: true,
     dictionaryList: [],
-    toView: '' 
+    toView: '',
+    hud_top: (wx.getSystemInfoSync().windowHeight - 150) / 2,
+    hud_left: (wx.getSystemInfoSync().windowWidth - 150) / 2,
+    startY:0,
+    status:true,
+    pressed: false,
+    cancel :false,
+    normal: true,
+    startpoint:0
   },
   /**
   * 生命周期函数--监听页面加载
@@ -133,24 +145,25 @@ Page({
                 }
               }
             }
-            newdata.unshift(list[i]);
+            newdata.unshift(list[i])
           }
-          newdata = newdata.concat(that.data.newslist);
+          newdata = newdata.concat(that.data.newslist)
           ++that.data.page;
         } else {
-          newdata = newdata.concat(that.data.newslist);
+          newdata = newdata.concat(that.data.newslist)
         }
-        that.setData({ newslist: newdata });
+        that.setData({ newslist: newdata })
         that.bottom()
       }
     }
-    );
+    )
   },
   /**
    * 显示弹窗
    */
   buttonTap: function (e) {
-    this.setData({
+    var that=this
+    that.setData({
       modalHidden: false,
       dictionaryList: e.currentTarget.dataset['index']
     })
@@ -168,21 +181,8 @@ Page({
     var that = this;
     GetList(that);
   },
-  //   该方法绑定了页面滚动时的事件
-  scroll: function (event) {
-   // console.log(event.detail.scrollTop)
-    // this.setData({
-    //   scrollTop: event.detail.scrollTop
-    // });
-  },
   // 页面卸载
   onUnload() {
-    // wx.closeSocket();
-    // wx.showToast({
-    //   title: '连接已断开~',
-    //   icon: "none",
-    //   duration: 2000
-    // })
   },
   //事件处理函数
   send: function () {
@@ -284,82 +284,77 @@ Page({
     //button会自动清空，所以不能再次清空而是应该给他设置目前的input值
     this.setData({
       message: this.data.message
-    })
+    });
   },
-  //发送图片
-  // chooseImage() {
-  //   var that = this
-  //   wx.chooseImage({
-  //     count: 1, // 默认9
-  //     sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-  //     sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-  //     success: function (res) {
-  //       // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-  //       var tempFilePaths = res.tempFilePaths
-  //       wx.uploadFile({
-  //         url: getApp().globalPath + '/reportServer/uploadFile/uploadFile', //服务器地址
-  //         filePath: tempFilePaths[0],
-  //         name: 'file',
-  //         headers: {
-  //           'Content-Type': 'form-data'
-  //         },
-  //         success: function (res) {
-  //           if (res.data) {
-  //             var ba2 = [{
-  //               'from_userId': that.data.userId,
-  //               'post_message': '暂无消息',
-  //               'message_type': 'image',
-  //               'to_userId': that.data.to_userId,
-  //               'message_state': '0',
-  //               'message_time': utils.formatTime(new Date())
-  //             }];
-  //             var ba3 = that.data.newslist.concat(ba2);
-  //             that.setData({
-  //               newslist: ba3
-  //             });
-  //             that.bottom()
-  //           }
-  //         }
-  //       })
-  //     }
-  //   })
-  // },
-  // //图片预览
-  // previewImg(e) {
-  //   var that = this
-  //   //必须给对应的wxml的image标签设置data-set=“图片路径”，否则接收不到
-  //   var res = e.target.dataset.src
-  //   var list = this.data.previewImgList //页面的图片集合数组
-  //   //判断res在数组中是否存在，不存在则push到数组中, -1表示res不存在
-  //   if (list.indexOf(res) == -1) {
-  //     this.data.previewImgList.push(res)
-  //   }
-  //   wx.previewImage({
-  //     current: res, // 当前显示图片的http链接
-  //     urls: that.data.previewImgList // 需要预览的图片http链接列表
-  //   })
-  // },
   //聊天消息始终显示最底端
   bottom: function () {
     this.setData({
       toView: 'row_' + (this.data.newslist.length - 1)
     });
-    // var query = wx.createSelectorQuery()
-    // query.select('#flag').boundingClientRect()
-    // query.selectViewport().scrollOffset()
-    // query.exec(function (res) {
-    //   wx.pageScrollTo({
-    //     scrollTop: res[0].bottom // #the-id节点的下边界坐标
-    //   })
-    //   res[1].scrollTop // 显示区域的竖直滚动位置
-    // })
   },
-  onPullDownRefresh: function () {
-   // console.log("下拉");
-    // var that = this;
-    // GetList(that);
+  longTap:function () {
+    console.log("长按")
+    wx.showToast({
+      title: '我是长按'
+    })
+  }, 
+  touchStart: function (e) {
+    console.log("start")
+    // 触摸开始
+    var startY = e.touches[0].clientY;
+    // 记录初始Y值
+    this.setData({
+      startY: startY,
+      status: this.data.pressed
+    });
   },
-  onReachBottom: function () {
-   // console.log("上拉");
+  touchMove: function (e) {
+    console.log("move")
+    // 触摸移动
+    var movedY = e.touches[0].clientY;
+    var distance = this.data.startY - movedY;
+    // console.log(distance);
+    // 距离超过50，取消发送
+    this.setData({
+      status: distance > 50 ? this.data.cancel : this.data.pressed
+    });
+  },
+  touchEnd: function (e) {
+    console.log("end")
+    // 触摸结束
+    var endY = e.changedTouches[0].clientY;
+    var distance = this.data.startY - endY;
+    // console.log(distance);
+    // 距离超过50，取消发送
+    this.setData({
+      cancel: distance > 50 ? true : false,
+      status: this.data.normal
+    });
+    // 不论如何，都结束录音
+   // this.stop();
+  }, 
+  mytouchstart: function (e) {
+    var that = this;
+    wx.createSelectorQuery().select('#scroll-wrap').fields({
+      scrollOffset: true,
+      size: true
+    }, function (rect) {
+      that.data.start_scroll = rect.scrollTop;
+     // self.data.height = rect.height;
+    }).exec();
+    //开始触摸，获取触摸坐标
+    that.setData({ startpoint: e.touches[0].clientY });
+  },
+  //触摸点移动
+  mytouchmove: function (e) {
+    //当前触摸点坐标
+    var that = this;
+    var curPoint = e.changedTouches[0].clientY;
+    var startpoint = that.data.startpoint;
+   // if (!canUseReachBottom) return;
+    //比较pageY值
+    if (curPoint>startpoint && curPoint - startpoint> 20 && that.data.start_scroll==0) {
+        GetList(that);
+    }
   }
 })
