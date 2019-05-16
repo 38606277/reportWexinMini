@@ -1,6 +1,7 @@
 var network = require("../../utils/network.js");
 var utils  = require("../../utils/util.js");
 var canUseReachBottom = true;//触底函数控制变量
+let recorderManager = wx.getRecorderManager();
 var GetList = function (that) {
   //canUseReachBottom = false;
   that.setData({
@@ -79,11 +80,12 @@ Page({
     hud_top: (wx.getSystemInfoSync().windowHeight - 150) / 2,
     hud_left: (wx.getSystemInfoSync().windowWidth - 150) / 2,
     startY:0,
-    status:true,
-    pressed: false,
-    cancel :false,
-    normal: true,
-    startpoint:0
+    startpoint:0,
+    recordStatus:false,
+    startTime:0,
+    recordingTimeqwe: 0,//录音计时
+    setInter: "",//录音名称
+    isSaying:false
   },
   /**
   * 生命周期函数--监听页面加载
@@ -294,44 +296,57 @@ Page({
   },
   longTap:function () {
     console.log("长按")
-    wx.showToast({
-      title: '我是长按'
-    })
+    // wx.showToast({
+    //   title: '我是长按'
+    // })
+    this.openRecording()
   }, 
-  touchStart: function (e) {
-    console.log("start")
+  recordStart: function (e) {
     // 触摸开始
     var startY = e.touches[0].clientY;
     // 记录初始Y值
     this.setData({
       startY: startY,
-      status: this.data.pressed
+      recordStatus: true,
+      isSaying:true,
+      startTime: e.timeStamp
     });
   },
-  touchMove: function (e) {
-    console.log("move")
+  recordMove: function (e) {
     // 触摸移动
     var movedY = e.touches[0].clientY;
     var distance = this.data.startY - movedY;
-    // console.log(distance);
     // 距离超过50，取消发送
-    this.setData({
-      status: distance > 50 ? this.data.cancel : this.data.pressed
-    });
+    if (distance > 50){
+      this.setData({
+        recordStatus: false,
+        isSaying:false
+      });
+      recorderManager.stop();
+    }
   },
-  touchEnd: function (e) {
-    console.log("end")
-    // 触摸结束
-    var endY = e.changedTouches[0].clientY;
-    var distance = this.data.startY - endY;
-    // console.log(distance);
-    // 距离超过50，取消发送
-    this.setData({
-      cancel: distance > 50 ? true : false,
-      status: this.data.normal
-    });
-    // 不论如何，都结束录音
-   // this.stop();
+  recordEnd: function (e) {
+    var that = this;
+    var recordStatus = that.data.recordStatus;
+    console.log(recordStatus);
+    that.setData({ isSaying:false});
+    if (recordStatus) {
+      var endTime = e.timeStamp;
+      var speakTime = endTime - that.data.startTime;
+      //如果录音时间太短，提示
+      if (speakTime < 350) {
+        wx.showToast({
+          title: '说话时间太短',
+          icon: 'none',
+        })
+        recorderManager.stop();
+      } else { 
+      // 不论如何，都结束录音
+      this.shutRecording()
+      }
+    }else{
+      recorderManager.stop();
+    }
   }, 
   mytouchstart: function (e) {
     var that = this;
@@ -346,7 +361,7 @@ Page({
     that.setData({ startpoint: e.touches[0].clientY });
   },
   //触摸点移动
-  mytouchmove: function (e) {
+  mytouchend: function (e) {
     //当前触摸点坐标
     var that = this;
     var curPoint = e.changedTouches[0].clientY;
@@ -356,5 +371,92 @@ Page({
     if (curPoint>startpoint && curPoint - startpoint> 20 && that.data.start_scroll==0) {
         GetList(that);
     }
+  }, //录音计时器
+  recordingTimer: function () {
+    var that = this;
+    //将计时器赋值给setInter
+    that.data.setInter = setInterval(
+      function () {
+        var time = that.data.recordingTimeqwe + 1;
+        that.setData({
+          recordingTimeqwe: time
+        })
+      }
+      , 1000);
+  },
+  //开始录音
+  openRecording: function () {
+    var that = this;
+    const options = {
+      duration: 60000, //指定录音的时长，单位 ms，最大为10分钟（600000），默认为1分钟（60000）
+      sampleRate: 16000, //采样率
+      sampleBits: 16,     //采样数位 8, 16
+      numberOfChannels: 1, //录音通道数
+      encodeBitRate: 96000, //编码码率
+      format: 'mp3', //音频格式，有效值 aac/mp3
+      frameSize: 50, //指定帧大小，单位 KB
+    }
+    //开始录音计时   
+    that.recordingTimer();
+    //开始录音
+    recorderManager.start(options);
+    recorderManager.onStart(() => {
+      console.log('。。。开始录音。。。')
+    });
+    //错误回调
+    recorderManager.onError((res) => {
+      console.log(res);
+    })
+  },
+
+  //结束录音
+  shutRecording: function () {
+    var that = this;
+    recorderManager.stop();
+    recorderManager.onStop((res) => {
+      console.log('。。停止录音。。', res.tempFilePath)
+      const { tempFilePath } = res;
+      //结束录音计时  
+      clearInterval(that.data.setInter);
+      that.setData({ recordStatus:false});
+      //上传录音
+      //let formData = new FormData();
+      //formData.append("file", data.blob);
+      wx.uploadFile({
+        url: getApp().globalPath + '/reportServer/MyVoiceApplication/uploadai',//这是你自己后台的连接
+        filePath: tempFilePath,
+        name: "file",//后台要绑定的名称
+        header: {
+          "Content-Type": "multipart/form-data"
+        },
+       // formData: formData,
+        //参数绑定
+        // formData: {
+        //   recordingtime: that.data.recordingTimeqwe,
+        //   topicid: that.data.topicid,
+        //   userid: 1,
+        //   praisepoints: 0
+        // },
+        success: function (ress) {
+          console.log(res);
+          wx.showToast({
+            title: '保存完成',
+            icon: 'success',
+            duration: 2000
+          })
+        },
+        fail: function (ress) {
+          console.log("。。录音保存失败。。");
+        }
+      })
+    })
+  },
+
+  //录音播放
+  recordingAndPlaying: function (eve) {
+    wx.playBackgroundAudio({
+      //播放地址
+      dataUrl: '' + eve.currentTarget.dataset.gid + ''
+    })
   }
 })
