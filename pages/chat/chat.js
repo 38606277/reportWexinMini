@@ -420,16 +420,13 @@ Page({
       clearInterval(that.data.setInter);
       that.setData({ recordStatus:false});
       //上传录音
-      //let formData = new FormData();
-      //formData.append("file", data.blob);
       wx.uploadFile({
-        url: getApp().globalPath + '/reportServer/MyVoiceApplication/uploadai',//这是你自己后台的连接
+        url: getApp().globalPath + '/reportServer/MyVoiceApplication/uploadmp3',//这是你自己后台的连接
         filePath: tempFilePath,
         name: "file",//后台要绑定的名称
         header: {
           "Content-Type": "multipart/form-data"
         },
-       // formData: formData,
         //参数绑定
         // formData: {
         //   recordingtime: that.data.recordingTimeqwe,
