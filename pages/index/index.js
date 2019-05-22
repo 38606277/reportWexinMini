@@ -1,4 +1,5 @@
 var network = require("../../utils/network.js");
+var wxchart = require('../../utils/wxcharts');
 //获取应用实例
 const app = getApp()
 
@@ -85,6 +86,7 @@ Page({
         }
       })
     }
+    that.barShow()
   },
   getUserInfo: function(e) {
     console.log(e)
@@ -104,5 +106,24 @@ Page({
     wx.switchTab({
       url: '../chat/chat'
     })
+  },
+  barShow: function () {
+    let bar = {
+      canvasId: 'barGraph',
+      type: 'column',
+      categories: ['2012', '2013', '2014', '2015', '2016', '2017'],
+      series: [{
+        name: '树状报表',
+        data: [15, 20, 45, 37, 4, 80]
+      }],
+      yAxis: {
+        format: function (val) {
+          return val + '万';
+        }
+      },
+      width: 320,
+      height: 200
+    }
+    new wxchart(bar)
   }
 })
