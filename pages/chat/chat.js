@@ -390,7 +390,6 @@ Page({
     const options = {
       duration: 60000, //指定录音的时长，单位 ms，最大为10分钟（600000），默认为1分钟（60000）
       sampleRate: 16000, //采样率
-      sampleBits: 16,     //采样数位 8, 16
       numberOfChannels: 1, //录音通道数
       encodeBitRate: 96000, //编码码率
       format: 'mp3', //音频格式，有效值 aac/mp3
@@ -428,20 +427,21 @@ Page({
           "Content-Type": "multipart/form-data",
           'credentials': '{ UserCode: "system", Pwd: "KfTaJa3vfLE=" }'
         },
-        //参数绑定
-        // formData: {
-        //   recordingtime: that.data.recordingTimeqwe,
-        //   topicid: that.data.topicid,
-        //   userid: 1,
-        //   praisepoints: 0
-        // },
         success: function (ress) {
-          console.log(res);
-          wx.showToast({
-            title: '保存完成',
-            icon: 'success',
-            duration: 2000
-          })
+          //console.log(ress.data);
+          var val = ress.data;
+          if(val!=null && val!=""){
+            if (utils.isJSON(val)) {
+              val = JSON.parse(val);
+            }
+            let key ='message';
+            that.setData({ [key]: val.data.content});
+          }
+          // wx.showToast({
+          //   title: '保存完成',
+          //   icon: 'success',
+          //   duration: 2000
+          // })
         },
         fail: function (ress) {
           console.log("。。录音保存失败。。");
@@ -449,7 +449,6 @@ Page({
       })
     })
   },
-
   //录音播放
   recordingAndPlaying: function (eve) {
     wx.playBackgroundAudio({

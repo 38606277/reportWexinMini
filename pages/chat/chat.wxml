@@ -59,7 +59,7 @@
 <!-- 聊天输入 -->
 <view class="message">
   <form bindreset="cleanInput" class="sendMessage">
-    <input type="text" placeholder="请输入聊天内容.." value="{{massage}}" bindinput='bindChange'></input>
+    <input type="text" placeholder="请输入聊天内容.." value="{{message}}" bindinput='bindChange'></input>
   <!-- bindlongtap="longTap" bindtouchstart="touchStart" bindtouchend="touchEnd"  -->
       <view class='add' bindtouchstart='recordStart' bindtouchend='recordEnd' bindtouchmove='recordMove' bindlongtap='longTap'>
         <image style='width:100%;height:100%;' src='./../../static/image/yy_btn.png'></image>
