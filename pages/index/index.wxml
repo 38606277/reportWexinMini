@@ -13,7 +13,10 @@
     </block>
   </swiper>
 
-  <view>数据查询</view>
+  <view class="aui-cell-flex">
+      <view class="aui-cell-text-fl">独家精选</view>
+      <view class="aui-cell-text-fr"></view>
+  </view>
   <view class="weui-grids">
     <view class="weui-grid" wx:for="{{list}}" wx:key="{{item.class_id}}">
       <navigator url="{{'/pages/query/queryClass?id=' + item.class_id}}">

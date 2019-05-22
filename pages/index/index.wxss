@@ -160,3 +160,37 @@ swiper { height:200px}
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+.aui-cell-flex {
+    background: #fff;
+    background-color: #FFF;
+    position: relative;
+    z-index: 1;
+    height: 30px;
+}
+
+.aui-cell-flex .aui-cell-text-fl {
+    color: #1b1b1b;
+    /* font-size: 16px; */
+    white-space: nowrap;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.aui-cell-flex .aui-cell-text-fr {
+  position:absolute;
+  right:0.45rem;
+  top: 6px;
+	width: 14px;
+	height: 14px;
+	border-top: 2px solid gainsboro;
+	border-right: 2px solid gainsboro;
+	transform: rotate(45deg);
+}
+
