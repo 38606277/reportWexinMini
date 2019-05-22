@@ -4,7 +4,7 @@
     <view class="tabBar-item">
       <navigator open-type="reLaunch" url="{{item.pagePath}}">
         <view><image class="icon" src='{{item.iconPath}}'></image></view>
-        <view class="tabBartext}}">{{item.text}}</view>
+        <view class="tabBartext">{{item.text}}</view>
       </navigator>  
     </view>
   </block>
