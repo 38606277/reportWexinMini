@@ -199,7 +199,9 @@ Page({
     } else {
       //先保存发送信息
       var message = this.data.message;
-      this.data.message = '';
+      let key ='message';
+      //this.data.message = '';
+      this.setData({[key]:""});
       let userInfo = {
         'from_userId': this.data.userId,
         'to_userId': this.data.to_userId,
@@ -295,7 +297,7 @@ Page({
     });
   },
   longTap:function () {
-    console.log("长按")
+  //  console.log("长按")
     // wx.showToast({
     //   title: '我是长按'
     // })
@@ -328,7 +330,7 @@ Page({
   recordEnd: function (e) {
     var that = this;
     var recordStatus = that.data.recordStatus;
-    console.log(recordStatus);
+   // console.log(recordStatus);
     that.setData({ isSaying:false});
     if (recordStatus) {
       var endTime = e.timeStamp;
@@ -400,11 +402,11 @@ Page({
     //开始录音
     recorderManager.start(options);
     recorderManager.onStart(() => {
-      console.log('。。。开始录音。。。')
+      //console.log('。。。开始录音。。。')
     });
     //错误回调
     recorderManager.onError((res) => {
-      console.log(res);
+    //  console.log(res);
     })
   },
 
@@ -413,7 +415,7 @@ Page({
     var that = this;
     recorderManager.stop();
     recorderManager.onStop((res) => {
-      console.log('。。停止录音。。', res.tempFilePath)
+     // console.log('。。停止录音。。', res.tempFilePath)
       const { tempFilePath } = res;
       //结束录音计时  
       clearInterval(that.data.setInter);
@@ -444,7 +446,7 @@ Page({
           // })
         },
         fail: function (ress) {
-          console.log("。。录音保存失败。。");
+          //console.log("。。录音保存失败。。");
         }
       })
     })
