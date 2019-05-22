@@ -4,7 +4,6 @@ const app = getApp()
 
 Page({
   data: {
-    motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -23,19 +22,12 @@ Page({
     autoplay: true
   },
   swipclick(e) {
-    wx.navigateTo({
-      url: e.currentTarget.id
-    })
+    // wx.navigateTo({
+    //   url: e.currentTarget.id
+    // })
     // this.setData({
     //   indicatorDots: !this.data.indicatorDots
     // })
-  },
- 
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
   },
   onLoad: function () {
     var that = this;
@@ -102,10 +94,15 @@ Page({
       hasUserInfo: true
     })
   },
-  tourl(e){
-    wx.navigateTo({
-      url: 'userList'
+  toai:function(){
+    wx.switchTab({
+      url: '../AI/AI'
+    })
+  },
+  toChat: function () {
+    //如果跳转的路径已经在app.json文件中的TabBar选项中注册，跳转方法需要用wx.switchTab方法来跳转
+    wx.switchTab({
+      url: '../chat/chat'
     })
   }
-  
 })

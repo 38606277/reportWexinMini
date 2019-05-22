@@ -1,31 +1,56 @@
 /**index.wxss**/
-.userinfo {
+.header-navBar {
+  top:0px;
+  width: 100%;
+  height: 2rem;
+  position: fixed;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  background: #efeff4;
+  background-color:  #efeff4;
+  z-index: 9;
+  padding: 10rpx 10rpx;
 }
+.header-navBar input{
+  float:left;
+  width: 82%;
+  height: 90%;
+  line-height: 80rpx;
+  border: 1rpx solid #ccc;
+  padding:0 10rpx;
+  font-size: 35rpx;
+  background:#fff;
+  text-align:center;
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
+}
+ 
+.header-navBar view{
+  display: inline-block;
+  width: 80rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 60rpx;
+  text-align: center;
+  color: #999;
+  border: 0px;
   border-radius: 50%;
+  margin-left: 10rpx;
 }
-
-.userinfo-nickname {
-  color: #aaa;
+/* banner  start*/
+swiper { 
+  height:200px
 }
-
-.usermotto {
-  margin-top: 200px;
+.swiper-box{
+  margin-top: 50px;
 }
-/* banner */
-.swiper-box .wx-swiper-dots.wx-swiper-dots-horizontal{
+.swiper-box .wx-swiper-dots .wx-swiper-dots-horizontal{
   margin-bottom: 2rpx;
 }
-
-swiper { height:200px}
-.slide-image { width: 100%; height: 195px}
+.slide-image { 
+  width: 100%; height: 195px
+}
 .swiper-box .wx-swiper-dot{
   width:40rpx;
   display: inline-flex;
@@ -34,16 +59,6 @@ swiper { height:200px}
   justify-content:space-between;
 }
 
-.swiper-box .wx-swiper-dot::before{
-  content: '';
-  flex-grow: 1;
-  background: rgba(255,255,255,0.8);
-  border-radius: 8rpx
-}
-
-.swiper-box .wx-swiper-dot-active::before{
-  background:rgba(244,0,0,0.8);
-}
 /* 九宫格 */
 .weui-grids {
     position: relative;
@@ -193,4 +208,5 @@ swiper { height:200px}
 	border-right: 2px solid gainsboro;
 	transform: rotate(45deg);
 }
+
 
