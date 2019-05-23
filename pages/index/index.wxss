@@ -182,6 +182,7 @@ swiper {
     position: relative;
     z-index: 1;
     height: 30px;
+     border-bottom: 1px solid #d4d4d4;
 }
 
 .aui-cell-flex .aui-cell-text-fl {
@@ -196,6 +197,7 @@ swiper {
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
+    padding-left: 10px;
 }
 
 .aui-cell-flex .aui-cell-text-fr {

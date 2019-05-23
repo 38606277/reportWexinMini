@@ -41,4 +41,4 @@
       <view class="aui-cell-text-fl">数据报表</view>
       <view class="aui-cell-text-fr"></view>
   </view>
- <canvas style="width: 100%; height: 200px;" canvas-id="barGraph"></canvas>
+ <canvas style="width: 100%; height: 200px;margin-top:20px" canvas-id="barGraph"></canvas>
