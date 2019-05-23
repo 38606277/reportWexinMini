@@ -15,7 +15,7 @@
 }
 .header-navBar input{
   float:left;
-  width: 82%;
+  width: 83%;
   height: 90%;
   line-height: 80rpx;
   border: 1rpx solid #ccc;
@@ -28,8 +28,8 @@
  
 .header-navBar view{
   display: inline-block;
-  width: 80rpx;
-  height: 80rpx;
+  width: 70rpx;
+  height: 70rpx;
   line-height: 80rpx;
   font-size: 60rpx;
   text-align: center;

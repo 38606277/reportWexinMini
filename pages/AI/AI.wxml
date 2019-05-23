@@ -1,6 +1,9 @@
 <view class="header-navBar">
     <input type="text" value="{{value}}" bindinput='bindChange' bindfocus='searchfouce' placeholder="输入你要查询的内容" bindtap='toai'></input>
-    <button type="primary" bindtap='getQueryResult' formType="reset" size="small" button-hover="blue">查询      </button>
+     <view class='add' >
+        <image style='width:100%;height:100%;' src='./../../static/image/icon/search.png' bindtap='getQueryResult'></image>
+      </view>
+    <!-- <button type="primary" bindtap='getQueryResult' formType="reset" size="small" button-hover="blue">查询      </button> -->
 </view>
 
   <view class="aui-cell-flex">

@@ -16,7 +16,7 @@
 }
 .header-navBar input{
   float:left;
-  width: 76%;
+  width: 83%;
   height: 90%;
   line-height: 80rpx;
   border: 1rpx solid #ccc;
@@ -26,7 +26,18 @@
   text-align:center;
 
 }
-
+.header-navBar view{
+  display: inline-block;
+  width: 70rpx;
+  height: 70rpx;
+  line-height: 80rpx;
+  font-size: 60rpx;
+  text-align: center;
+  color: #999;
+  border: 0px;
+  border-radius: 50%;
+  margin-left: 10rpx;
+}
 .aui-cell-flex {
     background: #fff;
     background-color: #FFF;
