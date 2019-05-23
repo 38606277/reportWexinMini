@@ -43,7 +43,7 @@ swiper {
   height:200px
 }
 .swiper-box{
-  margin-top: 50px;
+  margin-top: 40px;
 }
 .swiper-box .wx-swiper-dots .wx-swiper-dots-horizontal{
   margin-bottom: 2rpx;

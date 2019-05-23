@@ -11,13 +11,12 @@ Page({
     list:[],
     burl: getApp().globalPath,
     imgUrls: [
-      { url: './../../static/image/a.png', code:"1",name:'1'},
-      { url: './../../static/image/java.png', code: "1", name: '1' },
-      { url: './../../static/image/elm.jpg', code: "1", name: '1' },
-      { url: './../../static/image/a.png', code: "1", name: '1' },
-      { url: './../../static/image/a.png', code: "1", name: '1' },
-      { url: './../../static/image/a.png', code: "1", name: '1' },
-      { url: './../../static/image/a.png', code: "1", name: '1' }
+      { url: './../../static/image/banner/banner.png', code: "1", name: '1' },
+      { url: './../../static/image/banner/banner2.png', code: "2", name: '2' },
+      { url: './../../static/image/banner/banner3.png', code: "3", name: '3' },
+      { url: './../../static/image/banner/banner4.png', code: "4", name: '4' },
+      { url: './../../static/image/banner/banner5.png', code: "5", name: '5' },
+      { url: './../../static/image/banner/banner6.png', code: "6", name: '6' }
       ],
     indicatorDots: true,
     autoplay: true
