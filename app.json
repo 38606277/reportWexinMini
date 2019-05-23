@@ -1,16 +1,14 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/index/userList",
-    "pages/userList/userList",
-    "pages/logs/logs",
-    "pages/query/queryList",
     "pages/chat/chat",
-    "pages/user/user",
+    "pages/query/queryList",
     "pages/query/queryClass",
     "pages/query/queryInParam",
     "pages/query/queryResult",
-    "pages/AI/AI"
+    "pages/AI/AI",
+    "pages/user/user",
+    "pages/logs/logs"
   ],
   "window": {
     "backgroundTextStyle": "light",

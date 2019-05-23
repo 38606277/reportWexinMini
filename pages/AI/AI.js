@@ -20,8 +20,9 @@ Page({
   data: {
     localStorgeSearchList: [],
     value: '',
-    data: [],
-    out: []
+    list: [],
+    out: [],
+    totalSize:0,
   },
 
   /**
@@ -37,6 +38,17 @@ Page({
       localStorgeSearchList: searchList
     });
     //wx.removeStorageSync('userInfo');
+  },//监听input值的改变
+  bindChange(res) {
+    this.setData({
+      value: res.detail.value
+    })
+  },
+  cleanInput() {
+    //button会自动清空，所以不能再次清空而是应该给他设置目前的input值
+    this.setData({
+      value: this.data.value
+    });
   },
   clearLocalStorge:function() {
     wx.removeStorageSync('searchList');
@@ -56,52 +68,52 @@ Page({
       });
     }
   },
-  getQueryResult: function(value) {
-    let searchList = wx.getStorageSync('searchList');
-    if (undefined == searchList || searchList == '' || searchList == null) {
-      searchList = [value];
-    } else if (searchList.length == 10) {
-      var index = searchList.indexOf(value);
-      if (index > -1) {
-        searchList.remove(value);
+  getQueryResult: function() {
+    var message = this.data.value;
+    if (message != null && message!=""){
+      let key = 'value';
+      this.setData({ [key]: "" });
+      let searchList = wx.getStorageSync('searchList');
+      if (undefined == searchList || searchList == '' || searchList == null) {
+        searchList = [message];
+      } else if (searchList.length == 10) {
+        var index = searchList.indexOf(message);
+        if (index > -1) {
+          searchList.remove(message);
+        } else {
+          searchList.pop();
+        }
+        searchList.unshift(message);
       } else {
-        searchList.pop();
+        var index = searchList.indexOf(message);
+        if (index > -1) {
+          searchList.remove(message);
+        }
+        searchList.unshift(message);
       }
-      searchList.unshift(value);
-    } else {
-      var index = searchList.indexOf(value);
-      if (index > -1) {
-        searchList.remove(value);
-      }
-      searchList.unshift(value);
+      wx.setStorageSync('searchList', searchList);
+      var that = this;
+      let qryParam = [{ in: { begindate: "", enddate: "", org_id: "", po_number: "", vendor_name: "电讯盈科" } }];
+      network.request({
+        url: getApp().globalPath + '/reportServer/query/execQuery/2/87',
+        data: JSON.stringify(qryParam),
+        header: {
+          'content-type': 'application/json',
+          'credentials': '{ UserCode: "system", Pwd: "KfTaJa3vfLE=" }'
+        },
+        method: 'POST',
+        success: function (res) {
+          if (res.data.resultCode == "1000") {
+            that.setData({ list: res.data.data.list, out: res.data.data.out });
+          }
+        },
+        fail: function (res) { },
+        complete: function (res) { },
+      })
     }
-    wx.setStorageSync('searchList', searchList);
-    let param = {};
-    var that = this;
-    network.request({
-      url: getApp().globalPath + '/reportServer/nlp/getResult/' + value,
-      data: '',
-      header: {
-        'content-type': 'application/json',
-        'credentials': '{ UserCode: "system", Pwd: "KfTaJa3vfLE=" }'
-      },
-      method: 'POST',
-      success: function (res) {
-        that.setData({ data: res.data.data.list, out: res.data.data.out });
-      },
-      fail: function (res) { },
-      complete: function (res) { },
-    })
-    
   },
-  onClickTag: function(value) {
-    this.setData({ value: value.item });
-  },
-  onClearSearch: function() {
-    this.setData({ value: '' });
-  },
-  onChange: function (value) {
-    this.setData({ value });
+  onClickTag: function(e) {
+    this.setData({ value: e.currentTarget.dataset.key});
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

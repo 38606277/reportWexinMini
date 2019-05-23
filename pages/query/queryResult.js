@@ -52,7 +52,9 @@ Page({
       method: "POST",
       data: JSON.stringify(aParam),
       success: function (res) {
-        that.setData({ list: res.data.data.list, totalSize:res.data.data.totalSize});
+        if (res.data.resultCode == "1000") {
+          that.setData({ list: res.data.data.list, totalSize:res.data.data.totalSize});
+        }
       }
     })
   },

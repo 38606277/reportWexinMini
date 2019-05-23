@@ -1,2 +1,28 @@
-<!--pages/AI/AI.wxml-->
-<text>pages/AI/AI.wxml</text>
+<view class="header-navBar">
+    <input type="text" value="{{value}}" bindinput='bindChange' bindfocus='searchfouce' placeholder="输入你要查询的内容" bindtap='toai'></input>
+    <button type="primary" bindtap='getQueryResult' formType="reset" size="small" button-hover="blue">查询      </button>
+</view>
+
+  <view class="aui-cell-flex">
+      <view class="aui-cell-text-fl">搜索历史</view>
+      <view class="aui-cell-text-fr" style='background: url("./../../static/image/icon/delete.png") center center / 21px 21px no-repeat; border: 0px solid rgb(221, 221, 221);' bindtap='clearLocalStorge'>
+      </view>
+  </view>
+<view class='tagcontent'>
+  <block wx:for="{{localStorgeSearchList}}" wx:key="key" wx:for-index="key" wx:for-item="v">
+    <view class='lab' data-key="{{v}}" bindtap='onClickTag'>{{v}}</view>
+  </block>
+</view>
+<view wx:for='{{list}}' wx:key="aiList" wx:for-index="idxlist" wx:for-item="litem">
+    <view wx:for='{{out}}' wx:key="aiout" wx:for-index="idxout" wx:for-item="outNamem">
+      <view class='flex-wrp-row itemnew'>
+        <view class='item-left flex-wrp-row'>
+          <text class='text'>
+          {{outNamem.out_name}}:{{litem[outNamem.out_id]}}
+          </text>
+        </view>
+      </view>
+    </view>
+   </view>
+<view wx:if="{{list.length==0}}" class='tips'>---暂无数据---</view>
+<view wx:if="{{totalSize>0 && list.length==totalSize}}" class='tips'>---没有数据了---</view>
